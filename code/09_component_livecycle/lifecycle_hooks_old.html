@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <!-- prepare component -->
+  <div id="test">
+
+  </div>
+</body>
+<!-- 引入依賴 ,引入的時候，必須就按照這個步驟 -->
+<!-- react core library ==> 全局多了物件 React-->
+<script src="../React-js/react.development.js" type="text/javascript"></script>
+<!-- support manipulate DOM tree ==> 全局多了物件 ReactDOM--->
+<script src="../React-js/react-dom.development.js" type="text/javascript"></script>
+<!-- jsx translate to js -->
+<script src="../React-js/babel.min.js" type="text/javascript"></script>
+
+
+<!--這裡使用了babel用來解析jsx語法-->
+<script type="text/babel">
+  class Count extends React.Component{
+
+    constructor(props){
+      console.log('Count-constructor');
+      super(props)
+      this.state = {count:0}
+    }
+
+    add = () => {
+      const {count} = this.state
+      this.setState({count:count+1})
+    }
+    death = () => {
+      ReactDOM.unmountComponentAtNode(document.getElementById('test'))
+    }
+    force = () => {
+      this.forceUpdate()
+    }
+    // 組件將要掛載
+    componentWillMount(){
+      console.log('Count-componentWillMount');
+    }
+    // 組件掛載完畢
+    componentDidMount(){
+      console.log('Count-componentDidMount');
+    }
+    // 組件將要unmount
+    componentWillUnmount(){
+      console.log('Count-componentWillUnmount');
+    }
+    // 控制組件更新的閥門，不寫底層會麼認寫一個，且反回值為 true
+    shouldComponentUpdate(){
+      console.log('Count-shouldComponentUpdate');
+      return true;
+    }
+    // 組件將要更新
+    componentWillUpdate(){
+      console.log('Count-componentWillUpdate');
+    }
+    // 組件更新完畢
+    componentDidUpdate(){
+      console.log('Count-componentDidUpdate');
+    }
+    render(){
+      console.log('Count-render');
+      const {count} = this.state
+      return(
+        <div>
+          <h2>Total : {count}</h2>
+          <button onClick={this.add}> + 1 </button>
+          <button onClick={this.death}> unmount </button>
+          <button onClick={this.force}> forceUpdate </button>
+        </div>
+      )
+    }
+  }
+
+
+  class A extends React.Component{
+    state = {carName: 'Bens'}
+    changeCar = () => {
+      this.setState({carName:'Toyota'})
+    }
+    render(){
+      return(
+        <div>
+          <div>A component</div>
+          <button onClick={this.changeCar}>change Car</button>
+          <B carName={this.state.carName}/>
+        </div>
+      )
+    }
+  }
+
+  class B extends React.Component{
+    componentDidMount(){
+      console.log('B -- componentDidMount');
+    }
+    // 第一次接收 props 不會調用，之後之後接收新的/更新後的 props 才會調用
+    componentWillReceiveProps(props){
+      console.log('B -- componentWillReceiveProps', props);
+    }
+    // 控制組件更新的閥門，不寫底層會麼認寫一個，且反回值為 true
+    shouldComponentUpdate(){
+      console.log('B -- shouldComponentUpdate');
+      return true;
+    }
+    // 組件將要更新
+    componentWillUpdate(){
+      console.log('B -- componentWillUpdate');
+    }
+    // 組件更新完畢
+    componentDidUpdate(){
+      console.log('B -- componentDidUpdate');
+    }
+    render(){
+      console.log('B -- render');
+      return(
+        <div>B component, accept car : {this.props.carName}</div>
+      )
+    }
+  }
+
+  //ReactDOM.render(<Count/>,document.getElementById('test'))
+  ReactDOM.render(<A/>,document.getElementById('test'))
+</script>
+
+</html>

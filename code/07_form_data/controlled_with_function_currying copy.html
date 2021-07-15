@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <!-- prepare component -->
+  <div id="test">
+
+  </div>
+</body>
+<!-- 引入依賴 ,引入的時候，必須就按照這個步驟 -->
+<!-- react core library ==> 全局多了物件 React-->
+<script src="../React-js/react.development.js" type="text/javascript"></script>
+<!-- support manipulate DOM tree ==> 全局多了物件 ReactDOM--->
+<script src="../React-js/react-dom.development.js" type="text/javascript"></script>
+<!-- jsx translate to js -->
+<script src="../React-js/babel.min.js" type="text/javascript"></script>
+
+
+<!--這裡使用了babel用來解析jsx語法-->
+<script type="text/babel">
+    //#region
+      /*
+        高階函數(higher order function)，簡單說就是函數可以當作變數來用。因此就可以當作參數傳遞給函數，函數也以返回函數。 
+                                        EX: new Promise(()=>{})
+                                            setTimeout(()=>{}, 1000)
+                                            arr.mao().filter()...
+        function currying   通過函數調用繼續返回函數的方式，實現多次接收參數，最後統一處理的函數編寫形式
+                            把接收多個參數的函數轉換成只接收一個參數的函數，當中就是利用函數返回函數的方式來達成。
+      */
+    //#endregion
+  // create componrnt
+  class Login extends React.Component{
+    // initialize state
+    state = {
+      username: '',
+      password: ''
+    }
+    // return a function as callback function
+    saveFormdata = (dataType) => {
+      console.log(this, dataType)
+      return (event) => {
+        console.log(dataType, event.target.value);
+        this.setState({[dataType]:event.target.value})
+      }
+    }
+
+    handleSubmit = (event) => {
+      event.preventDefault() // prevent form submit == 避免頁面刷新/跳轉
+      const {username, password} = this.state
+      alert(`UserName: ${username}, Password: ${password}`);
+    }
+    
+    render(){
+      return (
+        <form action="https://www.google.com" onSubmit={this.handleSubmit}>{/*要設法避免頁面刷新/跳轉*/}
+          User : <input onChange={this.saveFormdata('username')} type="text" name="username"/>{/* 返回函數調用後的返回值 as callback function */}
+          Password : <input onChange={this.saveFormdata('password')} type="password" name="password"/>
+          <button>Login</button>
+        </form>
+      )
+    }
+  }
+
+  ReactDOM.render(<Login/>, document.getElementById('test'))
+</script>
+
+</html>

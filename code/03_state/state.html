@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <!-- prepare component -->
+  <div id="test"></div>
+</body>
+<!-- 引入依賴 ,引入的時候，必須就按照這個步驟 -->
+<!-- react core library -->
+<script src="../React-js/react.development.js" type="text/javascript"></script>
+<!-- support manipulate DOM tree-->
+<script src="../React-js/react-dom.development.js" type="text/javascript"></script>
+<!-- jsx translate to js -->
+<script src="../React-js/babel.min.js" type="text/javascript"></script>
+
+
+<!--這裡使用了babel用來解析jsx語法-->
+<script type="text/babel">
+
+  // 1.創建component
+  class Weather extends React.Component{
+    // 構造器被調用幾次？ ---- one time
+    constructor(props){ // this --> Weather 的實例物件
+      console.log('constructor');
+      super(props)
+      this.state = {isHot:false, wind:'flow'}
+      // console.log(this); // Weather 的實例物件
+      this.changeWetherForInstance = this.changeWether.bind(this)
+      // 等式右邊：創造一個新的函數（changeWether() 在 Weather 的原型對象上，供實例使用），該函數的值為實例物件，
+      // 等式左邊：並將函數放到實例物件上，並將該方法取名為 changeWetherForInstance()
+    }
+    // render() 被調用幾次？ ---- 1(initialized) + n times
+    // 從狀態 state 裡讀取值，並根據取出的值做展示
+    render(){ // this --> Weather 的實例物件
+      console.log('render()');
+      //console.log(this); // Weather 的實例物件
+      const {isHot, wind} = this.state
+      return <h1 onClick={this.changeWetherForInstance}> Today is {isHot ? 'hot' : 'cool'}, {wind} </h1>
+      // return <h1 onClick={changeWether}> Today is {isHot ? 'hot' : 'cool'} </h1>
+      // onClick={changeWether()} ==> 把 changeWether() 的返回值(undefined)賦給 onClick 作為回調
+      // onClick={changeWether} ==> 把 function changeWether() 賦給 onClick 作為回調 ==> not invoke changeWether() by instance but invoke directly
+      // return <h1> Today is {this.state.isHot ? 'hot' : 'cool'} </h1>
+    }
+    // changeWether() 被調用幾次？ ---- 點幾次調幾次
+    changeWether(){ // this --> undefined, 因為此方訪視作為 onClick 回調函數'直接'被調用，非通過實體物件調用，又因為 React 默認開啟局部嚴格模式 ===> this==undefined,
+      // method changeWether() 在 Weather 的原型對象上，供實例使用
+      // 通過 Weather 實例調用 changeWether() 時，changeWether() 中 this 的就是 Weather 實例
+      // but changeWether 作為 onClick 的回調(onClick={this.changeWether}), 不是通過實例物件調用，是直接調用
+      // console.log(this); // undefined，類中所定義的方法默認開啟局部嚴格模式
+
+      // obtain original data of isHot
+      const isHot = this.state.isHot
+      console.log(this);
+      this.setState({isHot: !isHot}) // state must be alter by setState(), 且更新是一種合併，不是替換
+
+      // this.state.isHot = !isHot // *** state con not be alter directory *** , since React 不認可這種方式
+      // console.log(this.state.isHot);
+    }
+  }
+
+  // 2.渲染，如果有多個渲染同一個容器，後面的會將前面的覆蓋掉
+  // ReactDOM.render(virtualDOM, component)
+  ReactDOM.render(<Weather/>,document.getElementById("test"));
+
+</script>
+
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <!-- prepare component -->
+  <div id="test"></div>
+  <div id="test2"></div>
+  <div id="test3"></div>
+</body>
+<!-- 引入依賴 ,引入的時候，必須就按照這個步驟 -->
+<!-- react core library ==> 全局多了物件 React-->
+<script src="../React-js/react.development.js" type="text/javascript"></script>
+<!-- support manipulate DOM tree ==> 全局多了物件 ReactDOM--->
+<script src="../React-js/react-dom.development.js" type="text/javascript"></script>
+<!-- jsx translate to js -->
+<script src="../React-js/babel.min.js" type="text/javascript"></script>
+<!-- import prop-types, 用於對組件標籤屬性進行限制 , ==> 全局多了物件 PropTypes--->
+<script src="../React-js/prop-types.js" type="text/javascript"></script>
+
+<!--這裡使用了babel用來解析jsx語法-->
+<script type="text/babel">
+  // 1.創建 component
+  class Person extends React.Component{
+    render(){
+      console.log(this);
+      const {name, age, gender} = this.props
+      //this.props.name = 'jack'// error --> props is readonly
+      return (
+        <ul>
+          <li>Name : {name}</li>
+          <li>Gender : {gender}</li>
+          <li>Age : {age+1}</li>
+        </ul>
+      )
+    }
+  }
+  //對組件的屬性對其進行限制
+  Person.propTypes = {
+      name:PropTypes.string.isRequired, //after 16.x.x
+      gender:PropTypes.string,
+      age:PropTypes.number,
+      speak:PropTypes.func
+  }
+  //指定默認的標籤屬性
+  Person.defaultProps = {
+    gender:"none",
+    age:18
+  }
+
+  function speak(){
+    console.log('speaking');
+  }
+
+  const p = {name:'Rose', age:34}
+  console.log('@', ...p); // not working
+  // 2.渲染，如果有多個渲染同一個容器，後面的會將前面的覆蓋掉
+  ReactDOM.render(<Person name="Lisa"  gender="female" speak={speak}/>,document.getElementById("test"));
+  ReactDOM.render(<Person name="Tom" age ={24} gender="male"/>,document.getElementById("test2"));
+  //ReactDOM.render(<Person name={p.name} age={p.age} gender={p.gender}/>,document.getElementById("test3"));
+  ReactDOM.render(<Person {...p}/>,document.getElementById("test3")); // 批量傳遞
+  // 這裡的 {} 代表js表達式， ...p 僅適用於標籤屬性的傳遞
+</script>
+
+</html>

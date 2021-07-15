@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .list{
+      width: 200px;
+      height: 150px;
+      background-color: skyblue;
+      overflow: auto;
+    }
+    .news{
+      height: 30px;
+    }
+  </style>
+</head>
+<body>
+  <!-- prepare component -->
+  <div id="test">
+</body>
+<!-- 引入依賴 ,引入的時候，必須就按照這個步驟 -->
+<!-- react core library ==> 全局多了物件 React-->
+<script src="../React-js/17.0/react.development.js" type="text/javascript"></script>
+<!-- support manipulate DOM tree ==> 全局多了物件 ReactDOM--->
+<script src="../React-js/17.0/react-dom.development.js" type="text/javascript"></script>
+<!-- jsx translate to js -->
+<script src="../React-js/17.0/babel.min.js" type="text/javascript"></script>
+
+
+<!--這裡使用了babel用來解析jsx語法-->
+<script type="text/babel">
+  class NewsList extends React.Component{
+
+    state = {newsArr:[]}
+
+    componentDidMount(){
+      setInterval(() => {
+        // get original state
+        const {newsArr} = this.state
+        // simulate a news
+        const news = 'NEWS' + (newsArr.length+1)
+        // update state
+        this.setState({newsArr:[news, ...newsArr]})
+      }, 1000);
+    }
+    getSnapshotBeforeUpdate(){
+      return this.refs.list.scrollHeight
+    }
+    componentDidUpdate(preProps, preStste, height){
+      // keep adding news --> scroll need to keep moving to keep specific news at previous position
+      this.refs.list.scrollTop += (this.refs.list.scrollHeight - height)
+    }
+    render(){
+      return(
+        <div ref = "list" className="list">
+          {
+            this.state.newsArr.map((n,index) => {
+              return <div key={index} className="news">{n}</div>
+            })
+          }
+        </div>
+      )
+    }
+  }
+
+  ReactDOM.render(<NewsList/>,document.getElementById('test'))
+
+</script>
+
+</html>

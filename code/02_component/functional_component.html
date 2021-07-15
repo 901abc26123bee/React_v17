@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <!-- 準備好容器 -->
+  <div id="test">
+
+  </div>
+  
+  <div id = "div">
+      
+  </div>
+
+</body>
+<!-- 引入依賴 ,引入的時候，必須就按照這個步驟-->
+<script src="../React-js/react.development.js" type="text/javascript"></script>
+<script src="../React-js/react-dom.development.js" type="text/javascript"></script>
+
+<script src="../React-js/babel.min.js" type="text/javascript"></script>
+
+
+<!--這裡使用了babel用來解析jsx語法-->
+<script type="text/babel">
+      // 1.創建函數式組件
+      function Demo(){
+          console.log(this); //這個this是undefined,因為babel編譯之後開啟了嚴格模式
+          return <h2>function component</h2>
+      }
+      //函數式組件還可以添加參數
+      function Show(props){
+          return <h1>Hello {props.age}</h1>
+      }
+      //2.渲染組件
+
+      ReactDOM.render(<Demo />,document.getElementById("test"));
+      ReactDOM.render(<Show age="88" />,document.getElementById("div"));
+      //注意事項：
+      /*
+      1.組件的首字母必須是大寫，並且有返回值
+      2.在渲染的時候必須<組件名 />
+      */
+
+      //執行過程：
+      //1.React解析組件標籤，找到相應的組件。
+      //2.發現組件是函數定義的，隨後調用函數，將返回的虛擬DOM轉化為真實DOM,隨後呈現在頁面中。
+
+      //在類中，一般方法是放在原型對像上的，供實例使用
+      //方法中的this主要取·決於是誰調用了他
+</script>
+
+
+
+</html>

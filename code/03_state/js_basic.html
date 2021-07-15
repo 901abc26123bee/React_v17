@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <button id="btn1"> button1</button>
+  <button id="btn2"> button2</button>
+  <button onclick="demo()"> button3</button>
+</body>
+
+
+<script type="text/javascript">
+  const btn1 = document.getElementById('btn1')
+  btn1.addEventListener('click', ()=>{
+    alert('press button1')
+  })
+
+  const btn2 = document.getElementById('btn2')
+  btn2.onclick = () => {
+    alert('press button2')
+  }
+
+  function demo(){
+    alert('press button3')
+  }
+  // 類 basic --------------------------
+  /**
+   * conclusion:
+   *  1. constructor 不是必須寫的，要對實體物件進行一些初始化操作，如添加指定屬性才寫。
+   *  2. if class A extends class B, 且 class B 中寫了構造器, 那麼 class A's constructor 中的 super() 是必須調用的, otherwise error
+   *  3. 類中所定義的方法，都是放在類的圓形物對象上，供實例去使用
+   **/
+  class Person{
+    constructor(name, age){
+      this.name = name
+      this.age = age
+    }
+    speak(){
+      console.log(`my name is ${this.name}, I am ${this.age} years old`);
+    }
+  }
+  class Student extends Person{
+    constructor(name, age, grade){
+      // this.name = name --> error
+      // this.age = age
+      super(name, age)
+      this.grade = grade
+    }
+    speak(){
+      console.log(`my name is ${this.name}, I am ${this.age} years old, I am ${this.grade}`);
+    }
+    study(){
+      console.log('I am studying');
+    }
+  }
+  const s = new Student('Lisa', 9, 'first year')
+  console.log(s);
+  s.speak()
+  s.study()
+
+  console.log(' --------------------------');
+  // 類中所定義的方法默認開啟局部嚴格模式 --------------------------
+    function demo1(){
+      'use strict'
+      console.log(this);
+    }
+    function demo2(){
+      console.log(this);
+    }
+    demo1(); // undefined
+    demo2(); // window
+
+    class Person2{
+      constructor(name, age){
+        this.name = name
+        this.age = age
+      }
+      study(){
+        console.log(this);
+      }
+    }
+    const p1 = new Person2('atom', 44)
+    p1.study() // invoke study() by instance ===> Person{'atom', 44}
+    const x = p1.study
+    x() // undefined, invoke study() directly
+
+    console.log(' --------------------------');
+    // class property shortcut --------------------------------
+    class Car{
+      constructor(name, price) {
+        this.name = name;
+        this.price = price
+        //this.wheel = 4
+      }
+      // 類中可以直接寫賦值語句，如下代碼含義：給 Car的「實體物件」 添加一個屬性，名為a，值為1
+      a = 1
+      wheel = 4
+      demo = 190 // 給「實體物件」加一個屬性
+      static demo2 = 190 // add static ==> 給類（非實體物件）自身加一個屬性
+    }
+    Car.demo = 190 // 給類（非實體物件）自身加一個屬性
+    const c1 = new Car('Tesla', 99999)
+    const c2 = new Car('Bens', 66666)
+    console.log(c1);
+    console.log(c2);
+</script>
+
+</html>

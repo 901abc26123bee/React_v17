@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+
+</body>
+
+<script type="text/javascript">
+
+  let arr1 = [1,2,3,4,5]
+  let arr2 = [4,5,6,7,8,9,0]
+  console.log(...arr1); // spread an Array
+  let arr3 = [...arr1, ...arr2] // conbime two array
+  console.log(...arr3);
+
+  // use in function
+  function sum(...nums){
+    return nums.reduce((pre, curr) => {
+      return pre + curr;
+    })
+  }
+  console.log(sum(4,5,6,7,8,9,0));
+
+  let person = {name:'tom', gae:77}
+  //console.log(...person); // TypeError: Found non-callable @@iterator
+  let person2 = {...person} // 在對象字面量中展開, It copies own enumerable properties from a provided object onto a new object.
+  person.name = 'jerry';
+  console.log('在對象字面量中展開',person2);
+  console.log('original object',person);
+
+let person3 = {...person, name:'Jack', address:'earth'} // merge
+console.log('在對象字面量中展開 + alter property', person3);
+</script>
+
+</html>

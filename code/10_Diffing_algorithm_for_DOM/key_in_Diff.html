@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <!-- prepare component -->
+  <div id="test"></div>
+</body>
+<!-- 引入依賴 ,引入的時候，必須就按照這個步驟 -->
+<!-- react core library ==> 全局多了物件 React-->
+<script src="../React-js/react.development.js" type="text/javascript"></script>
+<!-- support manipulate DOM tree ==> 全局多了物件 ReactDOM--->
+<script src="../React-js/react-dom.development.js" type="text/javascript"></script>
+<!-- jsx translate to js -->
+<script src="../React-js/babel.min.js" type="text/javascript"></script>
+
+
+<!--這裡使用了babel用來解析jsx語法-->
+<script type="text/babel">
+  class Person extends React.Component{
+    state = {
+      persons:[
+        {id:1, name:'atom', age:22},
+        {id:2, name:'leon', age:33}
+      ]
+    }
+    add = () => {
+      const {persons} = this.state
+      const p = {id:persons.length+1, name:'lisa', age:44}
+      this.setState({persons:[p, ...persons]})
+    }
+    render(){
+      return(
+        <div>
+          <h2>Show Profile: use index as key</h2>
+          <button onClick={this.add}> add Lisa </button>
+          <ul>
+            {
+              this.state.persons.map((personObj, index) => {
+                return <li key={index}>{personObj.name}----{personObj.age} <input type="text"/></li>
+              })
+            }
+          </ul>
+          <hr/>
+          <hr/>
+          <h2>Show Profile: use id as key</h2>
+          <ul>
+            {
+              this.state.persons.map((personObj) => {
+                return <li key={personObj.id}>{personObj.name}----{personObj.age} <input type="text"/></li>
+              })
+            }
+          </ul>
+        </div>
+      )
+    }
+  }
+
+  ReactDOM.render(<Person/>, document.getElementById('test'))
+</script>
+</html>

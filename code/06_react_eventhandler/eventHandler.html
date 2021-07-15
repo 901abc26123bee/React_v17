@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <!-- prepare component -->
+  <div id="test">
+
+  </div>
+</body>
+<!-- 引入依賴 ,引入的時候，必須就按照這個步驟 -->
+<!-- react core library ==> 全局多了物件 React-->
+<script src="../React-js/react.development.js" type="text/javascript"></script>
+<!-- support manipulate DOM tree ==> 全局多了物件 ReactDOM--->
+<script src="../React-js/react-dom.development.js" type="text/javascript"></script>
+<!-- jsx translate to js -->
+<script src="../React-js/babel.min.js" type="text/javascript"></script>
+<!-- import prop-types, 用於對組件標籤屬性進行限制 , ==> 全局多了物件 PropTypes--->
+<script src="../React-js/prop-types.js" type="text/javascript"></script>
+
+
+<!--這裡使用了babel用來解析jsx語法-->
+<script type="text/babel">
+  // create component
+  class Demo extends React.Component{
+    /**
+      React.createRef 調用後可以返回一個容器，該容器可以儲存被 ref 所標示得節點，該容器是“專人專用”的，後面放箭去的會覆蓋前面的
+    **/
+    myRef = React.createRef()
+    myRef2 = React.createRef()
+    // show data in left thandside
+    showData = () => {
+      console.log(this.myRef);
+      console.log(this.myRef.current.value);
+    }
+    showData2 = (event) => {
+      console.log(event.target.value);
+    }
+
+    render(){
+      return(
+        <div>
+          {/* 將ref當前所在的節點存儲在實體物件中的myRef*/}
+          <input ref={this.myRef} type="text" placeholder="click to show data"/><br/>
+          <button onClick={this.showData}> click to show data in left handside</button><br/>
+          <input onBlur={this.showData2} type="text" placeholder="click to show data"/><br/>{/*發生事件和要操作的DOM原素是同一個*/}
+        </div>
+      )
+    }
+  }
+  //
+  ReactDOM.render(<Demo/>, document.getElementById('test'))
+</script>
+
+</html>

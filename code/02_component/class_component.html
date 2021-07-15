@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 準備好容器 -->
+    <div id="test">
+
+    </div>
+</body>
+<!-- 引入依賴 ,引入的時候，必須就按照這個步驟-->
+<script src="../React-js/react.development.js" type="text/javascript"></script>
+<script src="../React-js/react-dom.development.js" type="text/javascript"></script>
+<script src="../React-js/babel.min.js" type="text/javascript"></script>
+
+
+<!--這裡使用了babel用來解析jsx語法-->
+<script type="text/babel">
+        // 1.創建類式組件 [必須繼承React.Component]
+        class MyComponent extends React.Component{
+            render(){
+                //render是放在原型對像上的，供實例對象使用
+                //render的this，MyComponent的實例對象【組件實例對象】
+                console.log('this in Mycomponent.render() : ' , this);
+                return <h1>這個是類組件</h1>
+            }
+        }
+
+        //2.渲染組件
+        ReactDOM.render(<MyComponent />,document.getElementById("test"))
+
+       //執行過程：
+       //1.React解析組件標籤，找到相應的組件
+       //2.發現組件是類定義的，隨後new出來的類的實例，並通過該實例調用到原型上的render方法
+       //3.將render返回的虛擬DOM轉化為真實的DOM,隨後呈現在頁面中
+
+
+       //複雜組件：有狀態的
+       //簡單組件：沒有狀態的
+       //組件的狀態裡面保存著數據 state
+</script>
+
+</html>

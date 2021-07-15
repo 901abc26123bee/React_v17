@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <!-- prepare component -->
+  <div id="test"></div>
+
+</body>
+<!-- 引入依賴 ,引入的時候，必須就按照這個步驟 -->
+<!-- react core library ==> 全局多了物件 React-->
+<script src="../React-js/react.development.js" type="text/javascript"></script>
+<!-- support manipulate DOM tree ==> 全局多了物件 ReactDOM--->
+<script src="../React-js/react-dom.development.js" type="text/javascript"></script>
+<!-- jsx translate to js -->
+<script src="../React-js/babel.min.js" type="text/javascript"></script>
+<!-- import prop-types, 用於對組件標籤屬性進行限制 , ==> 全局多了物件 PropTypes--->
+<script src="../React-js/prop-types.js" type="text/javascript"></script>
+
+<!--這裡使用了babel用來解析jsx語法-->
+<script type="text/babel">
+  // 1.創建 component
+  function Person(props){
+    console.log(props);
+    const{name, age, gender} = props
+    return(
+      <ul>
+        <li>Name : {name}</li>
+        <li>Gender : {gender}</li>
+        <li>Age : {age+1}</li>
+      </ul>
+    )
+  }
+
+  //對組件的屬性對其進行限制
+  Person.propTypes = {
+      name:PropTypes.string.isRequired, //after 16.x.x
+      gender:PropTypes.string,
+      age:PropTypes.number
+  }
+
+  //指定默認的標籤屬性
+  Person.defaultProps = {
+    gender:"none",
+    age:18
+  }
+  
+  // 2.渲染，如果有多個渲染同一個容器，後面的會將前面的覆蓋掉
+  ReactDOM.render(<Person name="Lisa"  />,document.getElementById("test"));
+
+</script>
+
+</html>
